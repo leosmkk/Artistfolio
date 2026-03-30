@@ -1,0 +1,16 @@
+{
+  "name": "artistfolio",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:feed": "cd packages/feed-mf && npm run build && npm run preview",
+    "dev:dashboard": "cd packages/dashboard-mf && npm run build && npm run preview",
+    "dev:host": "cd packages/host-shell && npm run dev",
+    "build:feed": "cd packages/feed-mf && npm run build",
+    "build:dashboard": "cd packages/dashboard-mf && npm run build",
+    "build:host": "cd packages/host-shell && npm run build",
+    "build:all": "npm run build:feed && npm run build:dashboard && npm run build:host"
+  }
+}

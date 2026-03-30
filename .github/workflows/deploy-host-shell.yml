@@ -1,0 +1,48 @@
+name: Deploy host-shell
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/host-shell/**"
+  workflow_dispatch:
+
+# O host referencia os remotes pelas URLs de produção no Azure.
+# Essas URLs são configuradas como secrets do repositório.
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy host-shell
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: packages/host-shell/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/host-shell
+        run: npm ci
+
+      - name: Build with production remote URLs
+        working-directory: packages/host-shell
+        env:
+          VITE_FEED_MF_URL: ${{ secrets.FEED_MF_PRODUCTION_URL }}
+          VITE_DASHBOARD_MF_URL: ${{ secrets.DASHBOARD_MF_PRODUCTION_URL }}
+        run: npm run build
+
+      - name: Copy SWA config
+        run: cp packages/host-shell/staticwebapp.config.json packages/host-shell/dist/
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_HOST }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          skip_app_build: true
+          app_location: "packages/host-shell/dist"
