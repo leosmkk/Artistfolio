@@ -3,7 +3,7 @@
 Plataforma de portfólios para artistas independentes, construída com **React + Vite + Module Federation**, deployada no **Azure Static Web Apps**.
 
 URLS: https://nice-bush-0f9e1190f.2.azurestaticapps.net
-https://jolly-dune-0e2f4fe0f.6.azurestaticapps.net
+https://polite-cliff-041c0110f.1.azurestaticapps.net
 https://yellow-bush-0da22780f.4.azurestaticapps.net
 
 ---
